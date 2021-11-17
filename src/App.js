@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import './App.css';
 
@@ -22,9 +22,25 @@ class App extends React.Component  {
 
   // We set the user to current sign in when we mount the app
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({user: user})
-      console.log(user)
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if(userAuth) {
+        // creating a new user in the firebase db
+        const userRef = await createUserProfileDocument(userAuth)
+
+        // adding user data to app by setting the state with user data
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          })
+          console.log(this.state)
+        })
+      } else {
+        // setting currentUser to null when the user logs out
+        this.setState({currentUser: userAuth})
+      }
     })
   }
 
