@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { connect } from 'react-redux';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -50,15 +50,20 @@ class App extends React.Component  {
         <Routes>
           <Route path='/' element={<HomePage/>} />
           <Route path='/shop' element={<ShopPage/>} />
-          <Route path='/signin' element={<SignInAndSignUp/>} />
+          <Route path='/signin' element={() => this.props.currentUser ? (<Navigate replace to='/'/>) : (<SignInAndSignUp />)} />
         </Routes>
-      </div>
+      </div> // Sign in page redirects if a user ins logged in or renders if no one is logged in
     );
   }
 }
 
+// getting user state from redux, now we have access to this.props.currentUser
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+})
+// sending state change to user actions to update user reducer state
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
