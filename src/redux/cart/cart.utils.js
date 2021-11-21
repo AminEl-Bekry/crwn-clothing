@@ -14,3 +14,20 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
     // if cart items don't match, return new array adding a base quantity value of 1
     return [...cartItems, {...cartItemToAdd, quantity: 1}]
 }
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+    const existingCartItem = cartItems.find(
+        cartItem => cartItem.id === cartItemToRemove.id
+    )
+    // If quantity of item to remove is 1, remove the whole item
+    if(existingCartItem.quantity === 1) {
+        return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id)
+    }
+    // otherwise, remove 1 from quantity and leave the rest of the items unchanged
+    return cartItems.map(
+        cartItem =>
+        cartItem.id === cartItemToRemove.id ?
+        { ...cartItems, quantity: cartItem.quantity - 1 }
+        : cartItem
+    )
+}
