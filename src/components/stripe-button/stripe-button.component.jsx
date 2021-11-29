@@ -1,8 +1,6 @@
 import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 
-import './stripe-button.styles.scss'
-
 const StripeCheckoutButton = ({ price }) => {
     // Stripe wants all prices in cents so $50 = 5000 so we do this calculation to make code readable
     const priceForStripe = price * 100

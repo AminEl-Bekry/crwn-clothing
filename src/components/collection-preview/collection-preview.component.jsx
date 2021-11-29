@@ -1,13 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import CollectionItem from "../collection-item/collection-item.component";
 
-import './collection-preview.styles.scss'
+import {
+    CollectionPreviewContainer,
+    CollectionTitle,
+    CollectionItemContainer
+} from './collection-preview.styles'
 
 const CollectionPreview = ({title, items}) => (
-    <div className='collection-preview'>
-        <h1 className='title'>{title.toUpperCase()}</h1>
-        <div className='preview'>
+    <CollectionPreviewContainer>
+        <Link to={`/shop/${title.toLowerCase()}`}><CollectionTitle>{title.toUpperCase()}</CollectionTitle></Link>
+        <CollectionItemContainer>
             {
                 items
                 // only showing 4 results with the .filter method.
@@ -16,8 +21,8 @@ const CollectionPreview = ({title, items}) => (
                     <CollectionItem key={item.id} item={item}/>
                 ))
             }
-        </div>
-    </div>
+        </CollectionItemContainer>
+    </CollectionPreviewContainer>
 )
 
 export default CollectionPreview
