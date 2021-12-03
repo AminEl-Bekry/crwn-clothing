@@ -1,20 +1,20 @@
 import React from "react";
 
-import './form-input.styles.scss'
+import {
+    FormContainer,
+    FormInputContainer,
+    FormInputLabel
+} from './form-input.styles'
 
-const FormInput = ({handleChange, label, ...otherProps}) => (
-    <div className="group">
-        <input className="form-input" onChange={handleChange} {...otherProps} />
-        {
-            // only rendering a label if a label field is present for an input
-            label ?
-            // we add a srhink class when the user has typed anything in to srhink the label
-            (<label className={`${otherProps.value.length ? 'shrink' : '' } form-input-label`}>
-                {label}
-            </label>)
-            : null
-        }
-    </div>
-)
+const FormInput = ({ handleChange, label, ...props }) => (
+  <FormContainer>
+    <FormInputContainer onChange={handleChange} {...props} />
+    {label ? (
+      <FormInputLabel className={props.value.length ? 'shrink' : ''}>
+        {label}
+      </FormInputLabel>
+    ) : null}
+  </FormContainer>
+);
 
 export default FormInput

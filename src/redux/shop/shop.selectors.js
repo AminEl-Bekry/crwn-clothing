@@ -12,12 +12,12 @@ export const selectCollectionsForPreview = createSelector(
     [selectCollections],
     // get all of the keys from the collections object, then map over the keys array to get the value of our collections object which will return an array of items
     // from that collection
-    collections => Object.keys(collections).map(key => collections[key])
+    collections => collections ? Object.keys(collections).map(key => collections[key]) : []
 )
 
 export const selectCollection = memoize(collectionUrlParam =>
     createSelector(
         [selectCollections],
-        collections => collections[collectionUrlParam]
+        collections => (collections ? collections[collectionUrlParam] : null)
     )
 )
